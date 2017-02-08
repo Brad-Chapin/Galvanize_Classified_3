@@ -1,0 +1,54 @@
+<form ng-submit="$ctrl.submitPost()">
+<div>
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" ng-model="$ctrl.post.title">
+</div>
+<div>
+  <label for="description">Description</label>
+  <input type="text" id="description" name="description" ng-model="$ctrl.post.description">
+</div>
+<div>
+  <label for="price">Price</label>
+  <input type="text" id="price" name="price" ng-model="$ctrl.post.price">
+</div>
+<div>
+<label for="item_image">Item Image</label>
+<input type="url" id="item_image" name="item_image" ng-model="$ctrl.post.item_image">
+</div>
+<button type="submit">Post a New Item</button>
+</form>
+
+<input type="search" ng-model="searchText" placeholder="Filter ads">
+
+<h1>Current Postings</h1>
+<div>
+  <p><a href="#" ng-click="$ctrl.sortSelect('new')">Sort by Newest</a>   <a ng-click="$ctrl.sortSelect('old')" href="#">Sort by Oldest</a>   <a href="#" ng-click="$ctrl.sortSelect('expensive')">Sort by Highest Price</a>    <a href="#" ng-click="$ctrl.sortSelect('cheap')">Sort by Lowest Price</a></p>
+</div>
+<div ng-repeat="post in $ctrl.posts | filter: searchText | orderBy: $ctrl.sort">
+  <h3 ng-model="searchText.title">{{post.title}}</h3>
+  <p ng-model="searchText.description">{{post.description}}</p>
+  <p>${{post.price}}</p>
+  <img src="{{post.item_image}}" alt="a picture of the thing">
+    <p><a ng-click="$ctrl.toggle = !$ctrl.toggle" href="#">edit post</a> <a ng-click="$ctrl.deletePost(post)" href="#">delete post</a></p>
+    <!-- edit form, toggles on edit button click -->
+    <form ng-if="$ctrl.toggle" ng-submit="$ctrl.editPost(post)">
+    <div>
+      <label for="newTitle">Title</label>
+      <input type="text" id="newTitle" name="newTitle" ng-model="$ctrl.newTitle">
+    </div>
+    <div>
+      <label for="newDescription">Description</label>
+      <input type="text" id="newDescription" name="newDescription" ng-model="$ctrl.newDescription">
+    </div>
+    <div>
+      <label for="newPrice">Price</label>
+      <input type="text" id="newPrice" name="newPrice" ng-model="$ctrl.newPrice">
+    </div>
+    <div>
+    <label for="newItem_image">Item Image</label>
+    <input type="url" id="newItem_image" name="newItem_image" ng-model="$ctrl.newItem_image">
+    </div>
+    <button type="submit">Submit your changes</button>
+    </form>
+    <hr>
+</div>
