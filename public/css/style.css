@@ -1,0 +1,65 @@
+body {
+  background-color: lightgray;
+}
+
+.post-style {
+  background-color: rgba(0, 0, 0, .6);
+  color: rgb(247, 144, 30);
+}
+
+.form-style {
+  padding-top: 25px;
+  padding-right: 50px;
+}
+
+.post {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.post-heading {
+  color: rgb(247, 144, 30);
+}
+
+.post-flex {
+  display: flex;
+  flex-direction: row;
+  padding-left: 25px;
+  margin-bottom: 3%;
+}
+
+.image-style {
+  display: inline-flex;
+  justify-content: flex-end;
+  padding-left: 150px;
+}
+
+h1 {
+  color:rgb(247, 144, 30);
+}
+
+.button-color {
+  background-color: rgba(0, 0, 0, .6);
+  color: rgb(247, 144, 30);
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+}
+
+a:link {
+    color: rgb(247, 144, 30);
+}
+
+a:visited {
+    color: rgb(247, 144, 30);
+}
+
+a:hover {
+    color: rgb(247, 144, 30);
+}
+
+a:active {
+    color: rgb(247, 144, 30);
+}

@@ -9,6 +9,7 @@
   function PostController ($http) {
     const vm = this;
     vm.submitPost = submitPost;
+    vm.clearPostForm = clearPostForm;
     vm.deletePost = deletePost;
     vm.editPost = editPost;
     vm.sortSelect = sortSelect;
@@ -25,8 +26,15 @@
       .then(function (response){
         vm.posts.push(response.data);
         delete vm.post;
+        clearPostForm();
       });
     }
+
+    function clearPostForm () {
+       vm.newPost = {};
+       vm.postForm.$setPristine();
+       vm.postForm.$setUntouched();
+     }
 
     function deletePost (post) {
       event.preventDefault();
@@ -44,10 +52,10 @@
       event.preventDefault();
       vm.changePost = {};
       vm.changePost.id = post.id;
-      vm.changePost.title = vm.newTitle;
-      vm.changePost.description = vm.newDescription;
-      vm.changePost.price = vm.newPrice;
-      vm.changePost.item_image = vm.newItem_image;
+      vm.changePost.title = vm.post.newTitle;
+      vm.changePost.description = vm.post.newDescription;
+      vm.changePost.price = vm.post.newPrice;
+      vm.changePost.item_image = vm.post.newItem_image;
       updatePost();
     }
     function updatePost () {
@@ -67,7 +75,7 @@
       let old = vm.posts.find(findPost);
       Object.assign(old, data);
       delete vm.changePost;
-      vm.toggle = !vm.toggle;
+      delete vm.post;
     });
     }
 
@@ -75,15 +83,19 @@
       switch (sort) {
         case 'expensive':
           vm.sort = "-price";
+          vm.sortDisplay ="Highest Price";
           break;
         case 'cheap':
           vm.sort = 'price';
+          vm.sortDisplay = "Lowest Price";
           break;
         case 'new':
           vm.sort = '-created_at';
+          vm.sortDisplay = "Newest Ads";
           break;
         case 'old':
           vm.sort = 'created_at';
+          vm.sortDisplay = "Oldest Ads";
           break;
       }
     }

@@ -1,54 +1,114 @@
-<form ng-submit="$ctrl.submitPost()">
-<div>
-  <label for="title">Title</label>
-  <input type="text" id="title" name="title" ng-model="$ctrl.post.title">
-</div>
-<div>
-  <label for="description">Description</label>
-  <input type="text" id="description" name="description" ng-model="$ctrl.post.description">
-</div>
-<div>
-  <label for="price">Price</label>
-  <input type="text" id="price" name="price" ng-model="$ctrl.post.price">
-</div>
-<div>
-<label for="item_image">Item Image</label>
-<input type="url" id="item_image" name="item_image" ng-model="$ctrl.post.item_image">
-</div>
-<button type="submit">Post a New Item</button>
-</form>
+<main class="container">
 
-<input type="search" ng-model="searchText" placeholder="Filter ads">
+    <div class="row">
+        <h1 class="text-center post-style">Galvanized Classifieds</h1>
+        <br>
+    </div>
 
-<h1>Current Postings</h1>
-<div>
-  <p><a href="#" ng-click="$ctrl.sortSelect('new')">Sort by Newest</a>   <a ng-click="$ctrl.sortSelect('old')" href="#">Sort by Oldest</a>   <a href="#" ng-click="$ctrl.sortSelect('expensive')">Sort by Highest Price</a>    <a href="#" ng-click="$ctrl.sortSelect('cheap')">Sort by Lowest Price</a></p>
-</div>
-<div ng-repeat="post in $ctrl.posts | filter: searchText | orderBy: $ctrl.sort">
-  <h3 ng-model="searchText.title">{{post.title}}</h3>
-  <p ng-model="searchText.description">{{post.description}}</p>
-  <p>${{post.price}}</p>
-  <img src="{{post.item_image}}" alt="a picture of the thing">
-    <p><a ng-click="$ctrl.toggle = !$ctrl.toggle" href="#">edit post</a> <a ng-click="$ctrl.deletePost(post)" href="#">delete post</a></p>
-    <!-- edit form, toggles on edit button click -->
-    <form ng-if="$ctrl.toggle" ng-submit="$ctrl.editPost(post)">
-    <div>
-      <label for="newTitle">Title</label>
-      <input type="text" id="newTitle" name="newTitle" ng-model="$ctrl.newTitle">
+    <!-- new post creation interface with form validation -->
+    <div class="row">
+      <div class="col-med-8 post-style form-style">
+        <form novalidate ng-submit="$ctrl.submitPost()" name="$ctrl.postForm" class="form-horizontal">
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.title.$invalid && $ctrl.postForm.title.$touched}">
+            <label for="title" class=" col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="title" name="title" ng-model="$ctrl.post.title" required ng-minlength="3">
+            </div>
+
+          </div>
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.description.$invalid && $ctrl.postForm.description.$touched}">
+            <label for="description" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="description" name="description" ng-model="$ctrl.post.description" required ng-minlength="10">
+            </div>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.price.$invalid && $ctrl.postForm.price.$touched}">
+            <label for="price" class=" col-sm-2 control-label">Price</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="price" name="price" ng-model="$ctrl.post.price" required>
+            </div>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.item_image.$invalid && $ctrl.postForm.item_image.$touched}">
+            <label for="item_image" class=" col-sm-2 control-label">Item Image</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="item_image" name="item_image" ng-model="$ctrl.post.item_image" required>
+            </div>
+          </div>
+          <br>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="button-color" ng-disabled="$ctrl.postForm.$invalid">Post a New Item</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <div>
-      <label for="newDescription">Description</label>
-      <input type="text" id="newDescription" name="newDescription" ng-model="$ctrl.newDescription">
+
+    <div class="row">
+        <div class="col-sm-12 col-med-8">
+            <h1 class="post-heading text-center">Current Postings</h1>
+
+            <!-- search and sort interface -->
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active">
+                    <input ng-model="searchText" type="search" class="form-control input-med search-form" placeholder="Filter ads">
+                </li>
+                <li class="dropdown" name="dropdown">
+                    <a href="#" class="dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort By {{$ctrl.sortDisplay}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="$ctrl.sortSelect('new')">Sort By Newst</a></li>
+                        <li><a ng-click="$ctrl.sortSelect('old')">Sort By Oldest</a></li>
+                        <li><a ng-click="$ctrl.sortSelect('expensive')">Sort By Highest Price</a></li>
+                        <li><a ng-click="$ctrl.sortSelect('cheap')">Sort By Lowest Price</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div>
-      <label for="newPrice">Price</label>
-      <input type="text" id="newPrice" name="newPrice" ng-model="$ctrl.newPrice">
+
+    <!-- display of all posts -->
+    <div class="post post-style post-flex row" ng-repeat="post in $ctrl.posts | filter: searchText | orderBy: $ctrl.sort">
+        <div class="col-med-6">
+            <h3 ng-model="searchText.title">{{post.title}}</h3>
+            <h3>${{post.price}}</h3>
+            <p ng-model="searchText.description">{{post.description}}</p>
+            <p><a ng-click="toggle = !toggle" href="#">edit post</a></p>
+            <p><a ng-click="$ctrl.deletePost(post)" href="#">delete post</a></p>
+
+          <!-- edit form, toggles on edit button click -->
+          <form name="$ctrl.editForm" ng-if="toggle" ng-submit="$ctrl.editPost(post)">
+              <div>
+                  <label for="newTitle">Title</label>
+                  <input type="text" id="newTitle" name="newTitle" ng-model="$ctrl.post.newTitle">
+              </div>
+              <div>
+                  <label for="newDescription">Description</label>
+                  <input type="text" id="newDescription" name="newDescription" ng-model="$ctrl.post.newDescription">
+              </div>
+              <div>
+                  <label for="newPrice">Price</label>
+                  <input type="text" id="newPrice" name="newPrice" ng-model="$ctrl.post.newPrice">
+              </div>
+              <div>
+                  <label for="newItem_image">Item Image</label>
+                  <input type="url" id="newItem_image" name="newItem_image" ng-model="$ctrl.post.newItem_image">
+              </div>
+              <br>
+              <button class="button-color" type="submit">Submit your changes</button>
+          </form>
+        </div>
+        <div class="row">
+            <div class="col-med-6 image-style">
+                <img src="{{post.item_image}}" alt="a picture of the item">
+            </div>
+
+        </div>
     </div>
-    <div>
-    <label for="newItem_image">Item Image</label>
-    <input type="url" id="newItem_image" name="newItem_image" ng-model="$ctrl.newItem_image">
+    <div class="row">
+      <footer class="text-center post-style">
+        <h1>Thanks for using Galvanize Classifieds!</h1>
+      </footer>
     </div>
-    <button type="submit">Submit your changes</button>
-    </form>
-    <hr>
-</div>
+</main>
